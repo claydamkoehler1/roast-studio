@@ -22,8 +22,8 @@ jobs:
       - name: Install Linux USB runtime
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libusb-1.0-0
-      - name: Check USB backend loads (no device access)
-        run: python -c "import libusb_package, usb.backend.libusb1; assert (libusb_package.get_libusb1_backend() or usb.backend.libusb1.get_backend()) is not None"
+      - name: Check native USB library loads (no USB bus required)
+        run: python scripts/check_usb_library.py
       - name: Python tests and local HTTP smoke test
         run: python -m unittest discover -s tests -v
       - name: JavaScript tests
