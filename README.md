@@ -9,14 +9,14 @@ A local coffee-roasting workspace for the **standard Aillio Bullet R2**. Home, R
 ## Start on a Mac
 
 1. Clone or download this repository and put it in a local folder, outside iCloud/Dropbox/OneDrive.
-2. If you do not already have Python 3.12+ or Homebrew, install [Homebrew](https://brew.sh). The launcher can then install Python for you. Alternatively, install [Python 3.12+](https://www.python.org/downloads/macos/) yourself.
-3. Double-click **Start Roasting.command**.
-4. On first launch, it creates a private Python environment and installs the USB libraries. If Homebrew is available, it also installs the official Codex CLI if missing.
-5. If ChatGPT is not connected, complete the sign-in in the browser that opens. Roast Studio then opens at **http://127.0.0.1:8740**.
+2. Double-click **Start Roasting.command**. First launch downloads Python, the USB libraries, and the official Codex CLI automatically. No Homebrew, Node.js, preinstalled Python, or administrator password is needed.
+3. If ChatGPT is not connected, complete the sign-in in the browser that opens. Roast Studio then opens at **http://127.0.0.1:8740**.
+
+Python packages live in `.venv`. The private Python runtime, installer, and Codex executable live alongside it in `.runtime`; both folders are excluded from Git. Official uv and Codex downloads are version-pinned and checksum-verified. First setup needs Internet access; later launches reuse these dependencies. AI conversations still require Internet access.
 
 Subsequent launches reuse the installed dependencies and saved login. You can close the launcher Terminal window after the app opens; the recorder keeps running. **Stop Roasting.command** stops the app, refusing to interrupt an unfinished roast.
 
-**Connect ChatGPT.command** runs setup/sign-in separately if you skipped it or need to reconnect. Without Homebrew, you can install the official CLI using `npm install -g @openai/codex` if Node.js is installed. The app also works without AI.
+**Connect ChatGPT.command** runs setup/sign-in separately if you skipped it or need to reconnect. The app also works without AI after setup. If upgrading from an earlier launcher, the old Python environment is preserved inside `.runtime/previous-venv.*` while the new private environment is created.
 
 If a ZIP download loses execute permissions, open Terminal in the extracted folder and run:
 
@@ -57,7 +57,7 @@ Codex stores its own login locally or in the OS credential store. Roast Studio n
 
 Only the selected coffee's captured source/profile, conversation, goal, machine reference pack, and relevant completed real roasts are sent to OpenAI. Financial data and unrelated beans are excluded. Requests and replies are saved in your **local** database. Beans and roasts are not uploaded to GitHub.
 
-Generation uses an ephemeral, read-only Codex process with user configuration, hooks, plugins, shell, browser, and device tools disabled. Output is validated before becoming a draft. Creating a recipe never operates the roaster. If the CLI is outdated, update it with `brew upgrade --cask codex` or `npm install -g @openai/codex`, then retry. CLI argument compatibility was checked with 0.160.0; this does not guarantee model entitlement.
+Generation uses an ephemeral, read-only Codex process with user configuration, hooks, plugins, shell, browser, and device tools disabled. Output is validated before becoming a draft. Creating a recipe never operates the roaster. On Mac, update Roast Studio and relaunch to install its supported CLI version. On Windows, update the Codex installation you use. CLI argument compatibility was checked with 0.160.0; this does not guarantee model entitlement.
 
 Official references: [ChatGPT/Codex authentication](https://learn.chatgpt.com/docs/auth), [Codex CLI](https://learn.chatgpt.com/docs/codex/cli).
 
@@ -85,7 +85,7 @@ The roast graph shows large readouts and a compact recipe bar with complete **P 
 
 Supported standard R2 settings: **P0–P10, F1–F12, D1–D9**. This adapter does not support the R2 Pro's higher power stages. Stale readings, unconfirmed commands, and machine errors disarm controls. The app does not bypass the machine's deadman behavior, update firmware, open doors, or autonomously restart a roast after a server restart. If the app or USB fails, use the physical controls.
 
-USB uses PyUSB/libusb-package and an Artisan-derived protocol. No hardware access occurs at app launch or during AI setup. On Windows, consult [Aillio's connection guidance](https://docs.aillio.com/roastime/troubleshooting/connection-issues/) if a driver is needed. On Mac, no Windows driver installer is used. If libusb cannot load, run `brew install libusb` and restart; keep Python and dependencies native to the Mac's architecture.
+USB uses PyUSB/libusb-package and an Artisan-derived protocol. No hardware access occurs at app launch or during AI setup. On Windows, consult [Aillio's connection guidance](https://docs.aillio.com/roastime/troubleshooting/connection-issues/) if a driver is needed. The Mac launcher installs the native USB library automatically; no separate Homebrew or driver installation is needed.
 
 ## Back up or move from Windows to Mac
 

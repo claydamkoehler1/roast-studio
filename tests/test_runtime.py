@@ -15,6 +15,14 @@ from roasting.server import App, handler_for
 
 
 class PlatformTest(unittest.TestCase):
+    def test_project_codex_takes_precedence_on_mac(self):
+        bundled = runtime.ROOT / '.runtime' / 'bin' / 'codex'
+        with patch('roasting.runtime.sys.platform', 'darwin'), \
+             patch.object(Path, 'is_file', lambda p: p == bundled), \
+             patch('roasting.runtime.os.access', return_value=True), \
+             patch('roasting.runtime.shutil.which', return_value='/global/codex'):
+            self.assertEqual(runtime.codex_client()[0], str(bundled))
+
     def test_mac_database_is_outside_checkout(self):
         home = Path.home()
         with patch('roasting.runtime.sys.platform', 'darwin'), patch.dict(os.environ, {}, clear=True), \

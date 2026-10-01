@@ -38,7 +38,17 @@ jobs:
           bash -n 'Connect ChatGPT.command'
           bash -n 'Stop Roasting.command'
           test -x 'Start Roasting.command'
+          # Simulate Finder on a clean Mac: no Homebrew, Node, or Python on PATH.
+          export PATH=/usr/bin:/bin:/usr/sbin:/sbin
           source scripts/macos.sh
           roast_setup
+          roast_codex
+          .venv/bin/python -c 'import sys; from pathlib import Path; assert Path(sys.base_prefix).resolve().is_relative_to(Path(".runtime/python").resolve())'
+          .runtime/bin/codex exec --help | grep -- --ignore-user-config
+          # A second setup must reuse installed binaries/packages without network.
+          export HTTPS_PROXY=http://127.0.0.1:1 HTTP_PROXY=http://127.0.0.1:1 ALL_PROXY=http://127.0.0.1:1 UV_OFFLINE=1
+          roast_setup
+          roast_codex
+          unset HTTPS_PROXY HTTP_PROXY ALL_PROXY UV_OFFLINE
           .venv/bin/python -c 'import libusb_package; assert libusb_package.get_libusb1_backend() is not None'
           .venv/bin/python tests/smoke_mac_launcher.py

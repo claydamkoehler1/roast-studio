@@ -20,6 +20,16 @@ Roast Studio's hardware adapter adapts the R2 device identifiers, protocol frami
 
 Installed distributions retain their own license metadata under `.venv` (macOS) or `.deps` (Windows). Dependencies are not vendored into the Git source tree.
 
+## macOS setup tools
+
+The launcher downloads official releases into the ignored `.runtime` folder:
+
+- [uv](https://github.com/astral-sh/uv) installs a managed Python runtime and the project's virtual environment.
+- [Python standalone builds](https://github.com/astral-sh/python-build-standalone) supply the runtime selected by uv.
+- [OpenAI Codex CLI](https://github.com/openai/codex) handles official ChatGPT sign-in and model requests.
+
+These tools retain their upstream licensing terms; their binaries are not included in this repository. Download versions and archive checksums for uv and Codex are recorded in `scripts/macos.sh`.
+
 ## Manufacturer references
 
 - [R2 unpacking, mechanical checks and seasoning](https://docs.aillio.com/bullet-r2/operation/unpacking-and-preparing/)

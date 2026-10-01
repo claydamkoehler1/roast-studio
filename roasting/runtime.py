@@ -28,6 +28,9 @@ def codex_client():
     for key in ('OPENAI_API_KEY', 'CODEX_API_KEY', 'OPENAI_BASE_URL',
                 'OPENAI_ORG_ID', 'OPENAI_ORGANIZATION', 'CODEX_ACCESS_TOKEN'):
         env.pop(key, None)
+    bundled = ROOT / '.runtime' / 'bin' / 'codex'
+    if sys.platform == 'darwin' and bundled.is_file() and os.access(bundled, os.X_OK):
+        return str(bundled), env
     exe = shutil.which('codex')
     if exe:
         return exe, env

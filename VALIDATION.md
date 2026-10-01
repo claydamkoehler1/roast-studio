@@ -197,3 +197,10 @@ Renamed the app, replaced the light palette throughout, removed the roast sideba
 - Gitleaks 8.30.1 scanned the staged source with no leaks found. A separate staged-file audit checked for databases, authentication/configuration folders, logs, private planning notes, and personal identifiers. Commit identity uses GitHub's no-reply address.
 - GitHub Actions covers macOS ARM64, macOS Intel, Windows, and Linux. CI does not exercise physical USB commands, browser OAuth completion, or an actual roast; hardware acceptance remains outstanding.
 - Hosted runs passed all Python/JavaScript checks on both Apple Silicon and Intel Macs, plus Windows. Both Macs also passed actual background-launch, existing-server reuse, and shutdown tests with an isolated database and no account or hardware connection. CI installs Linux's system libusb and checks native library linking without requiring a USB bus; Mac setup additionally checks backend initialization. Hosted Linux backend initialization returned no backend, so no Linux USB-device support is claimed by these tests.
+
+## Self-contained Mac setup - October 1, 2026
+
+- Replaced Homebrew prerequisites with local uv, managed Python 3.12, and the native Codex CLI. Python packages are isolated in `.venv`; tools, Python, and caches stay in ignored `.runtime`. Existing virtual environments are preserved when replaced. No shell profiles or system installations are changed.
+- Pinned uv/Codex downloads and verified their archive checksums against official release metadata. Account sign-in remains with Codex, outside the repository.
+- Local validation: 85 Python tests passed, including preference for the project-local Mac CLI; shell syntax and Git whitespace checks passed. Runtime folders are excluded by Git.
+- Extended both Mac CI jobs to bootstrap with a minimal system PATH, verify the private Python location, load the USB backend, run the real background launcher, and repeat setup with network access disabled. Physical hardware control and browser sign-in completion remain outside CI coverage.
